@@ -1,0 +1,26 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int n = 0;
+	int i = 0;
+	cin >> n;
+	for (i = 1; i <= n; i++)
+	{
+		int ret = i;
+		if (!i % 7)
+			cout << "敲桌子" << endl;
+		else
+			while (ret)
+			{
+				if (ret % 10 == 7)
+				{
+					cout << "敲桌子" << endl;
+					break;
+				}
+				ret/= 10;
+			}
+		if (!ret)
+			cout << i << endl;
+	}
+}//敲桌子
