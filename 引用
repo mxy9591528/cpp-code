@@ -1,0 +1,38 @@
+#include<iostream>
+using namespace std;
+void swap(int&x, int &y)
+{
+	int temp = x;
+	x=y;
+	y = temp;
+}
+int&c_cpp()
+{
+    static int q = 11;//static修饰后不会在函数结束后被销毁
+	return q;
+}
+int main()
+{
+	int*p1 = new int(10);//开辟内存空间并赋值
+	int*p2 = new int[10];//开辟10个int大小的内存空间
+	for (int i = 0; i < 1; i++)
+		p2[i]=i;
+	delete p1;//释放内存
+	delete []p2;//数组要前置方括号
+	p1 = NULL;
+	p2 = NULL;
+	int a = 10;
+	int &b = a;//引用操作，给a起个别名
+	int&d = a;//可对统一数据进行多次引用，编译器自动转化int* const d=&a
+	int c = 8;
+	a = 100;
+	cout << b <<endl<< a << endl;
+	swap(a, c);
+	cout << b << endl;
+	cin >> b;
+	cout << a <<" "<<d<< endl;
+	int&p3 = c_cpp();
+	cout << p3 << " ";
+	cout << p3 << endl;
+	return 0;
+}
