@@ -1,0 +1,23 @@
+#include<iostream>
+using namespace std;
+//未命名参数为占位参数，给形参赋默认值时，从该形参后的所有参数都要有初始值
+int print(int a, int b = 99, int c = 200, int=99)
+{
+	return a + b + c;
+}
+int print_1(int&a)
+{
+	return a * a;
+}
+//const修饰可作为重载函数的条件，但返回值不可
+int print_1(const int&a)
+{
+	return 1;
+}
+int main()
+{
+	int a = 12;
+	cout<<"hhh "<<print(12)<<endl;
+	cout << "eee " << print_1(12)<<" "<<print_1(a)<< endl;
+	return 0;
+}
