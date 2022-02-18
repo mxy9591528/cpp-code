@@ -1,0 +1,72 @@
+#include<iostream>
+using namespace std;
+//多态，开闭原则：对扩展开发，对修改关闭
+class Calculatecenter
+{
+public:
+	double m_n1;
+	double m_n2;
+	virtual double getresult()
+	{
+		return 0;
+	}
+};
+class Add :public Calculatecenter
+{
+public:
+	double getresult()
+	{
+		return m_n1 + m_n2;
+	}
+};
+class Sub :public Calculatecenter
+{
+public:
+	double getresult()
+	{
+		return m_n1 - m_n2;
+	}
+};
+class Mul :public Calculatecenter
+{
+public:
+	double getresult()
+	{
+		return m_n1 * m_n2;
+	}
+};
+class Dev :public Calculatecenter
+{
+public:
+	double getresult()
+	{
+		return m_n1 / m_n2;
+	}
+};
+class Pow :public Calculatecenter
+{
+public:
+	double getresult()
+	{
+		return pow(m_n1 ,m_n2);
+	}
+};
+void test()
+{
+	Pow a;
+	Calculatecenter&c1 = a;
+	Calculatecenter*c2 = new Sub;
+	cout << "请输入运算式" << endl;
+	cin >> c1.m_n1 >> c1.m_n2;
+	cout << c1.getresult() << endl;
+	cout << "请输入运算式" << endl;
+	cin >> c2->m_n1 >> c2->m_n2;
+	cout << c2->getresult()<< endl;
+	delete c2;
+	c2 = NULL;
+}
+int main()
+{
+	test();
+	return 0;
+}
