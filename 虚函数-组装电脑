@@ -1,0 +1,97 @@
+#include<iostream>
+using namespace std;
+class CPU
+{
+public:
+	virtual void Calculate() = 0;
+};
+class Video_card
+{
+public:
+	virtual void Display() = 0;
+};
+class Memory
+{
+public:
+	virtual void Storage() = 0;
+};
+class Computer
+{
+public:
+	Computer(CPU*cpu,Video_card*vc,Memory*memo)
+	{
+		m_cpu=cpu;
+		m_video_card = vc;
+		m_memory = memo;
+	}
+	void Start()
+	{
+		m_cpu->Calculate();
+		m_video_card->Display();
+		m_memory->Storage();
+	}
+	//析构释放空间
+	~Computer()
+	{
+		if (m_cpu != NULL)
+		{
+			delete m_cpu;
+			m_cpu = NULL;
+		}
+		if (m_video_card != NULL)
+		{
+			delete m_video_card;
+			m_video_card = NULL;
+		}
+		if (m_memory != NULL)
+		{
+			delete m_memory;
+			m_memory = NULL;
+		}
+	}
+private:
+	CPU*m_cpu;
+	Video_card*m_video_card;
+	Memory*m_memory;
+};
+class IntelCPU :public CPU
+{
+public:
+	void Calculate()
+	{
+		cout << "Intel CORE i5 开始计算了" << endl;
+	}
+};
+class NVIDIAVideo_card :public Video_card
+{
+public:
+	void Display()
+	{
+		cout << "3090Ti 开始渲染了" << endl;
+	}
+};
+class IntelMemory :public Memory
+{
+public:
+	void Storage()
+	{
+		cout << "不知名RAM开始存储了" << endl;
+	}
+};
+void test()
+{
+	//创建零件
+	CPU*cpu = new IntelCPU;
+	Video_card*vc = new NVIDIAVideo_card;
+	Memory*memo = new IntelMemory;
+	//创建电脑
+	Computer*c1 = new Computer(cpu, vc, memo);
+	c1->Start();
+	delete c1;
+	c1 = NULL;
+}
+int main()
+{
+	test();
+	return 0;
+}
