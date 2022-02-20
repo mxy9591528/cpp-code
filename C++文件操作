@@ -1,0 +1,96 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+int main()
+{
+	//fstream既可读又可写
+	ofstream ofs;
+	ofs.open("C:\\Users\\马县杨\\Desktop\\1.txt", ios::out);
+	ofs << "abcdefg" << endl << "hijkmn" << endl << "opqrst" << endl << "uvwxyz" << endl;
+	ofs.close();
+	ifstream ifs;
+	ifs.open("C:\\Users\\马县杨\\Desktop\\1.txt", ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "open failed" << endl;
+		return 0;
+	}
+	char buf[1024] = { 0 };
+	while (ifs >> buf)
+	{
+		cout << buf<<endl;
+	}
+	ifs.close();
+	cout << "-----------------" << endl;
+	ifs.open("C:\\Users\\马县杨\\Desktop\\1.txt", ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "open failed" << endl;
+		return 0;
+	}
+	while (ifs.getline(buf, sizeof(buf)))
+	{
+		cout << buf << endl;
+	}
+	ifs.close();
+	cout << "-----------------" << endl;
+	ifs.open("C:\\Users\\马县杨\\Desktop\\1.txt", ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "open failed" << endl;
+		return 0;
+	}
+	string str;
+	while (getline(ifs,str))
+	{
+		cout << str<< endl;
+	}
+	ifs.close();
+	cout << "-----------------" << endl;
+	ifs.open("C:\\Users\\马县杨\\Desktop\\1.txt", ios::in);
+	if (!ifs.is_open())
+	{
+		cout << "open failed" << endl;
+		return 0;
+	}
+	char c;
+	while (~(c=ifs.get()))//(c=ifs.get())!=EOF
+	{
+		//不需加换行
+		cout << c;
+	}
+	ifs.close();
+	return 0;
+}
+
+#include<iostream>
+#include<string>
+#include<fstream>
+using namespace std;
+class Person
+{
+public:
+	char name[10];
+	int age;
+};
+int main()
+{
+	fstream fst;
+	fst.open("Person.psn", ios::out | ios::binary);
+	Person p = { "张三",23 };
+	fst.write((const char*)&p, sizeof(p));
+	fst.close();
+	fstream r_fst;
+	r_fst.open("Person.psn", ios::in | ios::binary);
+	if (!r_fst.is_open())
+	{
+		cout << "Error!" << endl;
+		return 0;
+	}
+	Person p1;
+	r_fst.read((char*)&p1, sizeof(p1));
+	cout << p1.name << endl << p1.age << endl;
+	r_fst.close();
+	return 0;
+}
