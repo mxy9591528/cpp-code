@@ -1,0 +1,33 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+	int arr[10] = { 0,1,44566,3,4,665,6,97,8,9 };
+	int choice;
+	cout << "1.升序" << endl
+		<< "2.降序" << endl;
+	cin >> choice;
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		int maxormin = i;
+		{
+			for (int j = i + 1; j < sizeof(arr) / sizeof(arr[0]); j++)
+			{
+				//用当前最大或最小值与后面元素比较
+				if ((choice == 1 && (arr[maxormin] > arr[j])) || (choice == 2 && (arr[maxormin] < arr[j])))
+					maxormin = j;
+			}
+		}
+    //判断省去不必要交换
+		if (i != maxormin)
+		{
+			int temp = arr[i];
+			arr[i] = arr[maxormin];
+			arr[maxormin] = temp;
+		}
+	}
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
+	{
+		cout << arr[i] << " ";
+	}
+}//选择排序
