@@ -1,0 +1,137 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class Person
+{
+public :
+	int age;
+	string name;
+};
+//可以在模板参数列表处赋默认参数
+template<class Nametype=string,class Agetype=int>
+class Animal
+{
+public:
+	Nametype m_name;
+	Agetype m_age;
+	Animal(string name, int age)
+	{
+		this->m_name = name;
+		this->m_age = age;
+	}
+	void showanimal()
+	{
+		cout << this->m_name << " " << this->m_age << endl;
+	}
+};
+template<class T>
+bool compare(T&x, T&y)
+{
+	if (x == y)
+		return true;
+	else
+		return false;
+}
+//对于模板无法实现的，可以用重载将特殊数据实例化
+template<>bool compare(Person&p1, Person&p2)
+{
+	if (p1.age == p2.age&&p1.name == p2.name)
+		return true;
+	else
+		return false;
+}
+template<typename T>
+//函数模板用于相同数据类型，必须确定T的数据类型才能使用
+//作用域仅限一个函数
+//普通函数可以发生隐式类型转化，模板中显示指定类型可以，自动类型推导不行
+void Swap(T&a, T&b)
+{
+	T temp = a;
+	a = b;
+	b = temp;
+}
+template<typename T>
+//用指针无法转换
+T Add_1(T x,T y)
+{
+	return x + y;
+}
+int Add_2(int a, int b)
+{
+	return a + b;
+}
+void test()
+{
+	int a = 21;
+	int b = 76;
+	char c = 'c';
+	//自动类型推导
+	//Swap(a, b);
+	//显示指定类型
+	Swap<int>(a, b);
+	cout << a << " " << b << endl;
+	cout << Add_2(a, c) << endl;
+	cout<<Add_1<int>(a, c)<<endl;
+}
+template<class T>
+void Sort(T&arr, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		int maxormin = i;
+		for (int j = i + 1; j < len; j++)
+		{
+			if (arr[maxormin] > arr[j])
+				maxormin = j;
+		}
+		if (i != maxormin)
+		{
+			Swap(arr[i], arr[maxormin]);
+		}
+	}
+}
+template<class T>
+void print(T&arr, int len)
+{
+	for (int i = 0; i < len; i++)
+	{
+		cout << arr[i] << " ";
+	}
+	cout << endl;
+}
+void test_1()
+{
+	int a[10] = { 3,43,433,332,233,2334,4,22,2,575 };
+	char b[10] = "mhixweudw";
+	Sort(a, 10);
+	Sort(b, 10);
+	print(a, 10);
+	print(b, 10);
+}
+void test_2()
+{
+	int a = 10;
+	int b = 10;
+	int c = 45;
+	Person p1 = { 21,"张三" };
+	Person p2 = { 23,"李四" };
+	Person p3 = { 21,"张三" };
+	compare(a, b);
+	compare(a, c);
+	compare(p1, p2);
+	compare(p1, p3);
+}
+void test_3()
+{
+	//即使设置了默认参数，使用类模板时仍要带上空模板
+	Animal<>a("拉布拉多", 21);
+	a.showanimal();
+}
+int main()
+{
+	test();
+	test_1();
+	test_2();
+	test_3();
+	return 0;
+}
