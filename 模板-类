@@ -1,0 +1,281 @@
+//Array.hpp
+#pragma once
+#include<iostream>
+using namespace std;
+template<class T>
+class Array
+{
+private:
+	T*array;
+	int capacity;
+	int size;
+public:
+	Array(int n)
+	{
+		this->capacity = n;
+		this->array = new T[this->capacity];
+		this->size = 0;
+	}
+	Array(Array&a)
+	{
+		this->capacity = a.capacity;
+		this->size = a.size;
+		this->array = new T[this->capacity];
+		for (int i = 0; i < a.size;i++)
+		{
+			this->array[i] = a.array[i];
+		}
+	}
+	//为了使a=b=c这种式子成立
+	Array&operator=(Array&a)
+	{
+		if (this->array != NULL)
+		{
+			delete[] this->array;
+			this->array = NULL;
+			this->capacity = 0;
+			this->size = 0;
+		}
+		this->capacity = a.capacity;
+		this->size = a.size;
+		this->array = new T[this->capacity];
+		for (int i = 0; i < a.size; i++)
+		{
+			this->array[i] = a.array[i];
+		}
+		return *this;
+	}
+	T&operator[](int index)
+	{
+		return this->array[index];
+	}
+	void Addelm(int x)
+	{
+		if (!this->capacity||this->size==this->capacity)
+		{
+			return;
+		}
+		else
+		{
+			this->array[this->size] = x;
+			this->size++;
+		}
+	}
+	void Delelm()
+	{
+		if (!this->size)
+		{
+			return;
+		}
+		else
+		{
+			this->array[this->size] = 0;
+			this->size--;
+		}
+	}
+	int Getcapacity()
+	{
+		return this->capacity;
+	}
+	int Getsize()
+	{
+		return this->size;
+	}
+	~Array()
+	{
+		if (this->array != NULL)
+		{
+			delete[] this->array;
+			this->array = NULL;
+		}
+	}
+};
+//类模板.hpp
+#pragma once
+#include<iostream>
+#include<string>
+using namespace std;
+template<class T1,class T2>
+class Class
+{
+public:
+	Class(T1 a, T2 b);
+	T1 name1;
+	T2 name2;
+	void displayname();
+};
+template<class T1, class T2>
+Class<T1, T2>::Class(T1 x, T2 y)
+{
+	this->name1 = x;
+	this->name2 = y;
+}
+
+template<class T1, class T2>
+class F;
+template<class T1, class T2>
+void shownum(F<T1, T2>&f)
+{
+	cout << f.num1 << " " << f.num2 << endl;
+}
+template<class T1, class T2>
+void Class<T1, T2>::displayname()
+{
+	cout << this->name1 << " " << this->name2 << endl;
+}
+template<class T1, class T2>
+class F
+{
+	/*friend void shownum(F<T1, T2>&f)
+	{
+		cout << f.num1 << " " << f.num2 << endl;
+	}*/
+	T1 num1;
+	T2 num2;
+	//全局函数类外实现
+	friend void shownum<>(F<T1, T2>&f);
+public:
+	F(T1 x, T2 y)
+	{
+		this->num1 = x;
+		this->num2 = y;
+	}
+};
+#include"类模板.hpp"
+#include"Array.hpp"
+using namespace std;
+class A
+{
+public:
+	void print1()
+	{
+		cout << "AAA" << endl;
+	}
+};
+class B
+{
+public:
+	void print2()
+	{
+		cout << "BBB" << endl;
+	}
+};
+template<class T>
+class C
+{
+public:
+	T a;
+	void fun1()
+	{
+		a.print1();
+	}
+	void fun2()
+	{
+		a.print2();
+	}
+	void showtype();
+};
+//类模板成员函数类外实现要带参数模板
+template<class T>
+void C<T>::showtype()
+{
+	cout << typeid(T).name() << endl;
+}
+template<class T1,class T2>
+class D
+{
+public:
+	T1 name;
+	T2 num;
+	void showinf();
+};
+template<class T1, class T2>
+void D<T1, T2>::showinf()
+{
+	cout < this->name << " " << this->num << endl;
+}
+template<class T>
+class d
+{
+public:
+	T n;
+};
+//类的模板继承，一个确定父类成员类型，一个确定子类成员类型
+template<class T1,class T2>
+class smallD :public d<T1>
+{
+public:
+	T2 m;
+	void showtype()
+	{
+		cout << typeid(T2).name() << endl;
+	}
+};
+//指定传入类型
+void print_1(D<string, int>&d)
+{
+	cout << d.name << " " << d.num << endl;
+}
+//参数模板化
+template<class T1, class T2>
+void print_2(D<T1,T2>&p)
+{
+	cout << p.name << " " << p.num << endl;
+	cout << "T1的类型：" << typeid(T1).name() << endl;
+	cout << "T2的类型：" << typeid(T2).name() << endl;
+}
+//整个类的模板化
+template<class T>
+void print_3(T&p)
+{
+	cout << "T的类型：" << typeid(T).name() << endl;
+}
+void test()
+{
+	smallD<char,string> s;
+	s.showtype();
+	C<A>c1;
+	C<B>c2;
+	c1.fun1();
+	c1.showtype();
+	//c1.fun2();
+	//c2.fun1();
+	c2.fun2();
+	c2.showtype();
+	D<string, int>d = { "张三",23 };
+	print_1(d);
+	print_2(d);
+	print_3(d);
+}
+template<class T>
+void printArray(Array<T>&a)
+{
+	for (int i = 0; i < a.Getsize(); i++)
+	{
+		cout <<a[i] << " ";
+	}
+	cout << endl;
+}
+void test1()
+{
+	Class<string, string>c("张三","李四");
+	c.displayname();
+	F<int, int> f(12, 56);
+	shownum(f);
+	Array<char>a(129);
+	Array<char>a1(1000);
+	Array<char>a2(1000);
+	for (int i = 0; i < 129; i++)
+	{
+		a.Addelm(i);
+	}
+	a2 = a1 = a;
+	printArray(a2);
+	printArray(a);
+}
+int main()
+{
+	test();
+	test1();
+	return 0;
+}
