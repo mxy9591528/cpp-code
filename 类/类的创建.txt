@@ -1,0 +1,19 @@
+class Student
+{
+public:
+	string name;
+	string gender;
+	int age;
+	int num;
+	void show()
+	{
+		cout <<endl<<"姓名：" <<name <<" 性别："<<gender<<" 年龄："<<age<<" 学号："<<num << endl;
+	}
+	void set(string s,string sex,int t,int n)
+	{
+		name = s;
+		gender = sex;
+		age = t;
+		num = n;
+	}
+};

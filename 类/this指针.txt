@@ -1,0 +1,41 @@
+#include<iostream>
+using namespace std;
+class Person
+{
+public:
+	int age=10;
+	Person(int age)
+	{
+		//this指针指向类中成员
+		this->age = age;
+	}
+	Person&Addage(Person&p)
+	{
+		this->age += p.age;
+		//返回一个类的引用，用于调用
+		return *this;
+	}
+	void display(Person&p)
+	{
+		//判断，提高代码健壮性
+		if (!&p)
+			return;
+		cout << p.age << endl;
+	}
+};
+void test()
+{
+	//空指针调用
+	Person*p = NULL;
+	p->display(*p);
+}
+int main()
+{
+	test();
+	Person a(18);
+	Person b(18);
+	//链式编程
+	b.Addage(a).Addage(a).Addage(a);
+	cout << b.age << endl;
+	return 0;
+}

@@ -1,0 +1,67 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class House;
+class Person
+{
+	//友元
+	friend void Name(Person&p);//使Name函数能访问Person中的private
+	friend class House;//House类能访问Person中的所有成员
+	friend void test();
+public:
+	string name;
+	void setPerson();
+private:
+	void Pos(House&p);
+	string gender;
+};
+class House
+{
+	friend void test();
+	friend class Person;
+public:
+	string Hall;
+	void setName();
+private:
+	void Pos2(Person&p);
+	string Room;
+};
+//成员函数外定义
+void Person::Pos(House&p)
+{
+	cout << "朋友在访问你的" << p.Hall << endl;
+	cout << "朋友在访问你的" << p.Room << endl;
+}
+void House::Pos2(Person&p)
+{
+	cout <<endl<< p.name << "访问你的大厅,性别是"<<p.gender<< endl;
+}
+void House::setName()
+{
+	Hall="大厅";
+	Room = "卧室";
+}
+void Person::setPerson()
+{
+	name = "???";
+	gender = "?";
+}
+void Name(Person&p)
+{
+	cout <<"名字是"<<p.name<<"性别是"<<p.gender<<endl;
+}
+void test()
+{
+	House h;
+	Person p;
+	h.setName();
+	p.setPerson();
+	Name(p);
+	h.Pos2(p);
+	p.Pos(h);
+}
+int main()
+{
+	test();
+	return 0;
+}

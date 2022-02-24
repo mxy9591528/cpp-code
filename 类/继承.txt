@@ -1,0 +1,94 @@
+#include<iostream>
+using namespace std;
+class Base
+{
+public:
+	static int n;
+	int num = 123;
+	Base()
+	{
+		cout << "Base构造" << endl;
+	}
+	~Base()
+	{
+		cout << "Base析构" << endl;
+	}
+	void same()
+	{
+		cout << "Base::same()" << endl;
+	}
+	static void dif()
+	{
+		cout << "Base::dif()" << endl;
+	}
+};
+int Base::n = 321;
+class Derive :public Base
+{
+public:
+	int num = 123;
+	static int n;
+	Derive()
+	{
+		cout << "Derive构造" << endl;
+	}
+	~Derive()
+	{
+		cout << "Derive析构" << endl;
+	}
+	void same()
+	{
+		cout << "Derive::same()" << endl;
+	}
+	static void dif()
+	{
+		cout << "Derive::dif()" << endl;
+	}
+};
+int Derive::n = 321;
+//virtual虚继承
+class Rderive:virtual public Base
+{
+public:
+	int n= 123;
+};
+class Dderive :virtual public Base
+{
+public:
+	int n = 321;
+};
+class Other :public Base, public Derive
+{
+public:
+	Other()
+	{
+		cout << "多继承（只能继承非静态成员,静态成员从属于类，无论有多少子类，static的实例只有一个）" << endl;
+	}
+};
+class Total:public Dderive,public Rderive
+{
+
+};
+void test()
+{
+	//先构后析...
+	Derive d;
+	cout << d.num << " " << d.Base::num << endl;
+	d.same();
+	d.Base::same();
+	//非静态成员不可用类名访问
+	cout << Derive::n << " " << Derive::Base::n <<" "<<d.Base::n<<endl;
+	d.dif();
+	d.Base::dif();
+	Derive::Base::dif();
+	Other();
+	Total p;
+	p.Rderive::num = 222;
+	p.Dderive::num = 333;
+	cout << "菱形继承" << endl<<p.num<<endl;
+}
+int main()
+{
+	test();
+	return 0;
+}

@@ -1,0 +1,78 @@
+#pragma once
+#include<iostream>
+using namespace std;
+class Point
+{
+private:
+	int m_x, m_y;
+public:
+	void setx(int a);
+	void sety(int a);
+	int getx();
+	int gety();
+};
+
+#pragma once
+#include<iostream>
+#include"Point.h"
+using namespace std;
+class Circle
+{
+private:
+	int m_r;
+	Point m_center;
+public:
+	void setr(int a);
+	int getr();
+	void setcenter(Point p);
+	Point getcenter();
+	int judge(Point&p2);
+};
+//头文件中保留函数声明与类的结构
+
+#include"Point.h"
+void Point::setx(int a)
+{
+	m_x = a;
+}
+void Point::sety(int a)
+{
+	m_y = a;
+}
+int Point::getx()
+{
+	return m_x;
+}
+int Point::gety()
+{
+	return m_y;
+}
+
+
+#include"Circle.h"
+void Circle::setr(int a)
+{
+	m_r = a;
+}
+int Circle::getr()
+{
+	return m_r;
+}
+void Circle::setcenter(Point p)
+{
+	m_center = p;
+}
+Point Circle::getcenter()
+{
+	return m_center;
+}
+int Circle::judge(Point&p2)
+{
+	if (pow(p2.getx() - m_center.getx(), 2) + pow(p2.gety() - m_center.gety(), 2) == pow(m_r, 2))
+		return 0;
+	else if (pow(p2.getx() - m_center.getx(), 2) + pow(p2.gety() - m_center.gety(), 2) < pow(m_r, 2))
+		return 1;
+	else
+		return -1;
+}
+//源文件中保留函数定义，且类中函数都要在前面加上 [类名]::

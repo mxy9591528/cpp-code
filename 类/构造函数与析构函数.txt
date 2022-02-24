@@ -1,0 +1,121 @@
+#include<iostream>
+using namespace std;
+class Person
+{
+public:
+	int age = 18;
+	Person()
+	{
+		cout << "Person的无参构造函数" << endl;
+	}
+	//构造函数进行初始化，当设置有参构造函数后，编译器不在设置默认构造函数,以：分隔，可以对成员赋初值
+	Person(int a):age(a)
+	{
+		cout << "Person的有参构造函数" << endl;
+	};
+	//设置拷贝构造函数后，默认构造与默认析构函数将不再设置
+	Person(const Person&p):age(p.age)
+	{
+		cout << "Person的拷贝构造函数" << endl;
+		//age = p.age;
+	}
+	//析构函数进行清理，不能带参，对象销毁后调用，与构造均调用一次
+	~Person()
+	{
+		cout <<endl<<"Person的析构函数" << endl;
+	};
+};//这三种函数编译器都会默认设置且都为空实现，默认赋值函数也会创建
+void test()
+{
+	 Person p1;//栈区存放，函数调用完后释放内存
+	 Person p2(12);
+	 Person p3(p2);//括号法
+	 //Person p2=Person(12);//显示法
+	 //Person p2=12;//隐式转换法
+	 //匿名构造，用完后销毁
+	 //Person=12;
+}
+void test()
+{
+	 Person p1;//栈区存放，函数调用完后释放内存
+	 Person p2(12);
+	 Person p3(p2);//用已创建对象拷贝构造
+	 //Person p2=Person(12);
+	 //Person p2=12;
+	 //匿名构造，用完后销毁
+	 //Person=12;
+}
+void test1(Person p)//传参拷贝构造
+{
+	;
+}
+Person test2()
+{
+	Person p;
+	return p;
+}
+void test3()
+{
+	Person p = test2();//返回值拷贝构造
+}
+int main()
+{
+	Person p;
+	test();
+	test1(p);
+	test3();
+	system("pause");
+	return 0;
+}
+
+//深拷贝与浅拷贝
+#include<iostream>
+using namespace std;
+class Person
+{
+public:
+	int age = 18;
+	int*weight;
+	Person()
+	{
+		cout << endl<< "Person的无参构造函数";
+	}
+	Person(int a,int b)
+	{
+		age = a;
+		weight = new int(b);
+		cout << endl << "Person的有参构造函数";
+	};
+	Person(const Person&p)
+	{
+		cout << endl << "Person的拷贝构造函数";
+		age = p.age;
+		//weight = p.weight;
+		//编译器默认拷贝为浅拷贝，使该指针与构造函数中的指针指向同一块堆区，在析构函数中该空间会被释放两次
+		//深拷贝，另辟一块堆区
+		weight = new int(*p.weight);
+		cout <<endl<< age<<endl<<*weight;
+	}
+	//析构函数进行开辟内存的释放
+	~Person()
+	{
+		if (weight != NULL)
+		{
+			delete weight;
+			weight = NULL;
+		}
+		cout <<endl<<"Person的析构函数";
+	}
+};
+void test()
+{
+	 Person p2(12,57);
+	 Person p3(p2);
+}
+
+int main()
+{
+	test();
+	system("pause");
+	return 0;
+}

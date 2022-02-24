@@ -1,0 +1,186 @@
+#include<iostream>
+using namespace std;
+class Time
+{
+public:
+	//虚函数，加上virtual后在类中存储了一个vfptr(virtual,funcation,pointer)指针该指针指向vftable(虚函数表)
+	//利用VS 命令行可清晰观察
+	//动态绑定地址，在运行时确定地址
+	virtual void count()
+	{
+		cout << "This is one day" << endl;
+	}
+};
+class Second:public Time
+{
+public:
+	void count()
+	{
+		cout << "This is one second" << endl;
+	}
+};
+class Minute :public Time
+{
+public:
+	void count()
+	{
+		cout << "This is one minute" << endl;
+	}
+};
+void docount(Time&p)
+{
+	p.count();
+}
+void test()
+{
+	Second s;
+	Minute m;
+	docount(s);
+	docount(m);
+}
+int main()
+{
+	test();
+	return 0;
+}
+
+
+
+#include<iostream>
+#include<string>
+using namespace std;
+class Procedure
+{
+public:
+	//纯虚函数,由其构成的类为抽象类，不可创建对象
+	virtual void Boil()=0;
+	virtual void Brew() = 0;
+	virtual void Pour() = 0;
+	virtual void Addmaterial() = 0;
+	virtual void Taste() = 0;
+	void Display()
+	{
+		Boil();
+		Brew();
+		Pour();
+		Addmaterial();
+		Taste();
+	}
+	Procedure()
+	{
+		cout << "基类的构造函数" << endl;
+	}
+	//虚析构与纯虚析构可以解决父类指针释放子类对象不干净的问题
+	//若不采用虚析构则无法调用子类析构函数
+	/*virtual ~Procedure()
+	{
+		cout << "基类的虚析构函数" << endl;
+	}*/
+	virtual ~Procedure() = 0;
+};
+//纯虚析构类中声明，类外定义
+Procedure::~Procedure()
+{
+	cout << "基类的纯虚析构函数" << endl;
+}
+class Coffee :public Procedure
+{
+public:
+	string*name;
+	Coffee(string name)
+	{
+		this->name = new string(name);
+		cout << *this->name << "调用构造函数" << endl;
+	}
+	~Coffee()
+	{
+		if (name != NULL)
+		{
+			cout << *name << "调用析构函数" << endl;
+			delete name;
+			name = NULL;
+		}
+	}
+	//对基类纯虚函数的重写
+	void Boil()
+	{
+		cout << "用农夫山泉煮" << endl;
+	}
+	void Brew()
+	{
+		cout << "冲泡雀巢咖啡" << endl;
+	}
+	void Pour()
+	{
+		cout << "倒入250ml马克杯中" << endl;
+	}
+	void Addmaterial()
+	{
+		cout << "加入冰糖、牛奶" << endl;
+	}
+	void Taste()
+	{
+		cout << "Delicious!" << endl;
+	}
+};
+class Tea :public Procedure
+{
+public:
+	string*name;
+	Tea(string name)
+	{
+		this->name = new string(name);
+		cout << *this->name << "调用构造函数" << endl;
+	}
+	~Tea()
+	{
+		if (name != NULL)
+		{
+			cout << *name << "调用析构函数" << endl;
+			delete name;
+			name = NULL;
+		}
+	}
+	void Boil()
+	{
+		cout << "用百岁山煮" << endl;
+	}
+	void Brew()
+	{
+		cout << "冲泡龙井" << endl;
+	}
+	void Pour()
+	{
+		cout << "倒入50ml茶碗中" << endl;
+	}
+	void Addmaterial()
+	{
+		cout << "加入柠檬" << endl;
+	}
+	void Taste()
+	{
+		cout << "Terriable!" << endl;
+	}
+};
+void Doprocess(Procedure&p)
+{
+	p.Display();
+}
+void test()
+{
+	//用父类指针创建子类对象
+	Procedure*p = new Coffee("Coffee");
+	Procedure*p1 = new Tea("Tea");
+	Doprocess(*p);
+	cout << "-------------------" << endl;
+	Doprocess(*p1);
+	delete p;
+	delete p1;
+	p = NULL;
+	p1 = NULL;
+}
+int main()
+{
+	test();
+	return 0;
+}

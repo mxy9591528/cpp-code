@@ -1,0 +1,20 @@
+class Point
+{
+//私有，类内可访，类外不可
+private:
+	int a=10;
+	int b=5;
+//公有，类内类外都可访问
+public:
+	int Add()
+	{
+		return a+b;
+	}
+//保护，与private权限相同，但其派生类可以访问，而private不行
+protect:
+	int Mul()
+	{
+		return a*b;
+	}
+};
+//struct默认public,class默认private

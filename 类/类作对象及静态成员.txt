@@ -1,0 +1,58 @@
+##include<iostream>
+#include<string>
+using namespace std;
+
+class A
+{
+public:
+	string m_A;
+	static int price;
+	A(string A_Name) :m_A(A_Name)
+	{
+		cout << "A的构造" << endl;
+	}
+	~A()
+	{
+		cout << "A的析构" << endl;
+	}
+	static void H()
+	{
+		//静态函数只能访问静态成员，因为无法确定是哪个对象的m_A
+		//m_A = "wxubx";
+		price=9999;
+		cout << "被调用了"<<price<< endl;
+	}
+};
+//访问静态变量的方法
+int A::price = 5299;
+class B
+{
+public:
+	string m_B;
+	//类中另一个类构造的成员称为对象成员
+	//先构造对象成员再构造自身，析构顺序反之
+	A m_B_A;
+	B(string B_Name, string A_Name) :m_B(B_Name), m_B_A(A_Name)
+	{
+		cout << "B的构造" << endl;
+		cout << m_B << "拿着价值"<<m_B_A.price<< "的" << m_B_A.m_A << endl;
+	}
+	~B()
+	{
+		cout << "B的析构" << endl;
+	}
+};
+void test()
+{
+	B p("张三", "华为P99");
+	//可用该方法调用类中public函数
+	A::H();
+	A a("8848");
+	a.H();
+}
+
+int main()
+{
+	test();
+	return 0;
+}

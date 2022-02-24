@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+class A
+{
+public:
+	int m_a;
+	//mutable使m_b成为一个特殊值，在常量状态下仍能被修改
+	mutable int m_b;
+	//(const) A* const this,this指针指向固定，在函数后追加const修饰，使this指针指向的值也变为常量，不可修改
+	void fun1()const
+	{
+		//this->m_a=0;
+		this->m_b = 0;
+		cout << this->m_b << endl;
+	}
+	void fun2()
+	{}
+};
+void test()
+{
+	const A a;
+	a.fun1();
+	//常对象只能调用常成员函数
+	//a.fun2();
+	//a.m_a=0
+	a.m_b= 3;
+}
+int main()
+{
+	test();
+	return 0;
+}

@@ -1,0 +1,121 @@
+#include<iostream>
+using namespace std;
+class A
+{
+public:
+	int a;
+	int b;
+	A(int x,int y):a(x),b(y){}
+	//成员函数重载运算符 -，*，\替换即可
+	/*A&operator+(A&p)
+	{
+		A*temp=NULL;
+		temp = new A(p);
+		temp->a=this->a +p.a;
+		temp->b=this->b +p.b;
+		return *temp;
+	}*/
+	//重载赋值运算符函数，只能是类的非静态的成员函数
+	/*A&operator=(A&p)
+	{
+		this->a = p.a;
+		this->b = p.b;
+		return *this;
+	}*/
+	/*A&operator++()
+	{
+		this->a++;
+		this->b++;
+		return *this;
+	}*/
+	//int占位参数，用于区分后置与前置，只能用int
+	/*A&operator++(int)
+	{
+		A*temp = this;
+		this->a++;
+		this->b++;
+		return *temp;
+	}*/
+	//bool operator==(A&p)
+	//{
+	//	if (this->a == p.a&&this->b == p.b)
+	//		return true;
+	//	else
+	//		return false;
+	//}
+	/*bool operator!=(A&p)
+	{
+		if (this->a != p.a || this->b != p.b)
+			return true;
+		else
+			return false;
+	}*/
+	void operator()(A&p)
+	{
+		cout << "This is class A" << endl;
+	}
+};
+//全局函数重载
+A&operator+(A&p1, A&p2)
+{
+	A*temp = NULL;
+	temp = new A(p1);
+	temp->a = p1.a + p2.a;
+	temp->b = p1.b + p2.b;
+	return *temp;
+}
+//左移与右移（istreaam）运算符的重载只能写全局函数，在类中无法确定数据与cout的先后顺序
+ostream&operator<<(ostream&cout,A&p)
+{
+	cout << "a=" << p.a << endl;
+	cout << "b=" << p.b << endl;
+	return cout;
+}
+//A&operator++(A&p)
+//{
+//	p.a++;
+//	p.b++;
+//	return p;
+//}
+A operator++(A&p,int)
+{
+	A temp =p;
+	p.a++;
+	p.b++;
+	return temp;
+}//由于返回的不是p，不能做链式编程
+bool operator==(A&p1,A&p2)
+{
+	if (p1.a == p2.a&&p1.b == p2.b)
+		return true;
+	else
+		return false;
+}
+bool operator!=(A&p1,A&p2)
+{
+	if (p1.a != p2.a || p1.b != p2.b)
+		return true;
+	else
+		return false;
+}
+void test()
+{
+	A a(1,9);
+	A b(9,1);
+	a = b;
+	if (a == b)
+		cout << "a=b" << endl;
+	//++(++a);
+	a++;
+	cout << a << endl;
+	cout <<a+b<<"hhh"<<endl;
+	if (a != b)
+		cout << "a!=b" << endl;
+	//仿函数，只能在成员函数中重载
+	b(a);
+}
+int main()
+{
+	test();
+	return 0;
+}
