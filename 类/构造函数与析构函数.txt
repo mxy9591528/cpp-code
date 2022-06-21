@@ -29,16 +29,6 @@ void test()
 {
 	 Person p1;//栈区存放，函数调用完后释放内存
 	 Person p2(12);
-	 Person p3(p2);//括号法
-	 //Person p2=Person(12);//显示法
-	 //Person p2=12;//隐式转换法
-	 //匿名构造，用完后销毁
-	 //Person=12;
-}
-void test()
-{
-	 Person p1;//栈区存放，函数调用完后释放内存
-	 Person p2(12);
 	 Person p3(p2);//用已创建对象拷贝构造
 	 //Person p2=Person(12);
 	 //Person p2=12;
